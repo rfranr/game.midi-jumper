@@ -13,8 +13,10 @@
     "vite": "^5.3.1"
   },
   "dependencies": {
+    "@tonejs/midi": "^2.0.28",
     "@types/three": "^0.166.0",
     "save-dev": "^0.0.1-security",
-    "three": "^0.166.1"
+    "three": "^0.166.1",
+    "tone": "^15.1.2"
   }
 }

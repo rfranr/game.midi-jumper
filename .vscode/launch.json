@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "firefox",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/three-js-ts",
+            "timeout": 90000,
+            "tmpDir": "/home/rfranr/tmp"
+        }
+    ]
+}
