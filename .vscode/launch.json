@@ -4,11 +4,19 @@
         {
             "type": "firefox",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
+            "name": "Launch Firefox against localhost",
             "url": "http://localhost:5173",
             "webRoot": "${workspaceFolder}/three-js-ts",
             "timeout": 90000,
             "tmpDir": "/home/rfranr/tmp"
-        }
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/three-js-ts",
+            "timeout": 90000,
+        }        
     ]
 }
