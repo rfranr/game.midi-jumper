@@ -3,6 +3,39 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { main } from "./midi";
 import * as Tone from "tone";
+import GUI from "lil-gui";
+
+interface DemoOptions {
+  velocity: number;
+}
+
+const _demoOptions: DemoOptions = {
+  velocity: 0.92,
+};
+
+const config = {
+  velocity: 0,
+};
+
+// Step 3: Create a new instance of GUI
+const gui = new GUI();
+
+gui.add(document, "title");
+
+// Step 4: Add the velocity slider to the GUI
+gui.add(config, "velocity", 0, 100).name("Velocity");
+
+// Optional: Log the velocity value to the console whenever it changes
+gui.onChange((event) => {
+  event.object; // object that was modified
+  event.property; // string, name of property
+  event.value; // new value of controller
+  event.controller; // controller that was modified
+
+  console.log(event);
+
+  _demoOptions.velocity = event.value;
+});
 
 // read midi file
 Tone.start();
@@ -11,11 +44,11 @@ async function game() {
   const notes = await main();
   let noteIdx = 0;
 
-  const withSound = false;
+  const withSound = true;
 
   const lineWidth = 4;
-  //const velocity = 0.62;
-  const velocity = 0.92;
+  //const velocity = 0.92;
+  const velocity = () => _demoOptions.velocity;
 
   const scene = new THREE.Scene();
 
@@ -97,10 +130,10 @@ async function game() {
 
   function animate() {
     time += 1;
-    objectsPositin.x = objectsPositin.x - velocity;
+    objectsPositin.x = objectsPositin.x - velocity();
 
     for (let i = 0; i < meshes.length; i++) {
-      meshes[i].position.x += -velocity;
+      meshes[i].position.x += -velocity();
 
       //meshes[i].position.y = position.y + objectsPositin.y;
       //meshes[i].position.z = position.z + objectsPositin.z;

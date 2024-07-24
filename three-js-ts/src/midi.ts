@@ -1,6 +1,4 @@
-import { Midi } from '@tonejs/midi'
-
-
+import { Midi } from "@tonejs/midi";
 
 // simple track
 
@@ -22,35 +20,34 @@ async function loadMidiFile(url: string): Promise<Uint8Array> {
 
   const arrayBuffer = await response.arrayBuffer();
 
-  return new Uint8Array( arrayBuffer);
+  return new Uint8Array(arrayBuffer);
 }
 
 // Main function to parse the MIDI file
-export async function main() : Promise<Note[]> {
-  const _notes : Note[] = [];
-
+export async function main(): Promise<Note[]> {
+  const _notes: Note[] = [];
 
   const midiData = await loadMidiFile("tocatta.mid"); // Adjust the path as needed
   const midi = new Midi(midiData);
 
   //get the tracks
-  midi.tracks.forEach(track => {
+  midi.tracks.forEach((track) => {
     //tracks have notes and controlChanges
 
     //notes are an array
-    const notes = track.notes
-    notes.forEach(note => {
-      console.log ( note )
-      _notes.push ( {
+    const notes = track.notes;
+    notes.forEach((note) => {
+      console.log(note);
+      _notes.push({
         midi: note.midi,
         velocity: note.velocity,
         noteOffVelocity: note.noteOffVelocity,
         ticks: note.time,
         durationTicks: note.durationTicks,
-        name: note.name
-      } as  Note)
+        name: note.name,
+      } as Note);
       //note.midi, note.time, note.duration, note.name
-    })
+    });
 
     //the control changes are an object
     //the keys are the CC number
@@ -58,13 +55,13 @@ export async function main() : Promise<Note[]> {
     //they are also aliased to the CC number's common name (if it has one)
     //track.controlChanges.sustain.forEach(cc => {
     //  console.log ( cc )
-//
+    //
     //  // cc.ticks, cc.value, cc.time
     //})
 
     //the track also has a channel and instrument
     //track.instrument.name
-  })
-  
+  });
+
   return _notes;
 }
