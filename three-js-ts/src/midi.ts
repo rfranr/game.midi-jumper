@@ -24,10 +24,14 @@ async function loadMidiFile(url: string): Promise<Uint8Array> {
 }
 
 // Main function to parse the MIDI file
-export async function main(): Promise<Note[]> {
+export async function main(): Promise<{
+  notes: Note[];
+  ppq: number;
+  // other track info
+}> {
   const _notes: Note[] = [];
 
-  const midiData = await loadMidiFile("tocatta.mid"); // Adjust the path as needed
+  const midiData = await loadMidiFile("tocatta.mid"); 
   const midi = new Midi(midiData);
 
   //get the tracks
@@ -36,7 +40,7 @@ export async function main(): Promise<Note[]> {
 
     //notes are an array
     const notes = track.notes;
-    notes.forEach((note) => {
+    notes.forEach((note) => { 
       console.log(note);
       _notes.push({
         midi: note.midi,
@@ -63,5 +67,9 @@ export async function main(): Promise<Note[]> {
     //track.instrument.name
   });
 
-  return _notes;
+
+  return {
+    ppq: midi.header.ppq,
+    notes: _notes
+  };
 }

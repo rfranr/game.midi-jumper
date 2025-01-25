@@ -10,7 +10,7 @@ interface DemoOptions {
 }
 
 const _demoOptions: DemoOptions = {
-  velocity: 0.92,
+  velocity: 0.5,
 };
 
 const config = {
@@ -23,7 +23,7 @@ const gui = new GUI();
 gui.add(document, "title");
 
 // Step 4: Add the velocity slider to the GUI
-gui.add(config, "velocity", 0, 100).name("Velocity");
+gui.add(config, "velocity", 0.5, 10).name("Velocity");
 
 // Optional: Log the velocity value to the console whenever it changes
 gui.onChange((event) => {
@@ -40,8 +40,8 @@ gui.onChange((event) => {
 // read midi file
 Tone.start();
 
-async function game() {
-  const notes = await main();
+async function visualization() {
+  const {notes, ppq} = await main();
   let noteIdx = 0;
 
   const withSound = true;
@@ -64,16 +64,6 @@ async function game() {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(temp.width, temp.height);
 
-  // camera.translateZ(80);
-  // camera.translateY(-0);
-
-  /// camera.translateX(101);
-  /// camera.translateY(13);
-  /// camera.translateY(11);
-
-  // camera.translateX(94);
-  // camera.translateY(12);
-  // camera.translateY(-58);
 
   camera.position.x = 94;
   camera.position.y = 12;
@@ -81,7 +71,8 @@ async function game() {
 
   const objectsPositin = new THREE.Vector3();
   const synth = new Tone.Synth().toDestination();
-  let now = Tone.now();
+  let lastTime = Tone.now(); // Initialize lastTime to the current time
+
 
   function addLine(
     position: THREE.Vector3,
@@ -89,7 +80,7 @@ async function game() {
   ): THREE.Object3D {
     const color = new THREE.Color(Math.random(), Math.random(), Math.random());
     const geometry = new THREE.BoxGeometry(dimensions.x, 0.5, 0.5);
-    const material = new THREE.MeshBasicMaterial({ color: color });
+    const material = new THREE.MeshBasicMaterial({ color: color }); 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.x = position.x;
     mesh.position.y = position.y;
@@ -99,11 +90,20 @@ async function game() {
     // plat note
     if (withSound) {
       const note = notes[noteIdx];
-      synth.triggerAttack(note.name, now);
-      synth.triggerRelease(now + note.ticks / 10);
-      now = Tone.now() + 1 / 10;
+    
+      // Ensure that the start time is strictly greater than the last time
+      const startTime = lastTime; // Add a small offset to avoid collision
+      
+      // Trigger attack and release events with correct timing
+      synth.triggerAttack(note.name, startTime);  // Use startTime here
+      const noteDuration = note.durationTicks / (ppq / 1); // Convert ticks to seconds
+      synth.triggerRelease(startTime + noteDuration);  // Release the note based on startTime + duration
+      
+      // Update lastTime to the current note's release time
+      lastTime = startTime + note.durationTicks;
+      lastTime = Tone.now() +1; // Initialize lastTime to the current time
     }
-
+    
     return mesh;
   }
 
@@ -190,4 +190,20 @@ async function game() {
   //renderer.render(scene, camera);
 }
 
+async function game() {
+  const splashScreen = document.getElementById("splash-screen");
+  const startGameBtn = document.getElementById("start-game-btn");
+
+  startGameBtn?.addEventListener("click", () => {
+    if (splashScreen) {
+      splashScreen.style.display = "none"; // Hide splash screen
+    }
+
+    visualization()
+  });
+
+}
+
 game();
+
+

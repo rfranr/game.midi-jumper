@@ -4,9 +4,83 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>My MIDI Visualizer Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #121212; /* Dark background */
+        color: #ffffff; /* Light text */
+      }
+
+      #splash-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      #splash-screen h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      #splash-screen img {
+        width: 150px; /* Adjust logo size */
+        height: auto;
+        margin: 20px 0;
+      }
+
+      #splash-screen p {
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
+
+      #start-game-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #start-game-btn:hover {
+        background-color: #0056b3;
+      }
+
+      #app {
+        width: 100%;
+        height: 100%;
+        display: none; /* Will show after game starts */
+      }
+    </style>
   </head>
   <body>
+    <div id="splash-screen">
+      <h1>My MIDI Visualizer Game</h1>
+      <img src="public/logo.webp" alt="Game Logo" />
+      <p>Click the button to start the game!</p>
+      <button id="start-game-btn">Start Game</button>
+    </div>
+
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
