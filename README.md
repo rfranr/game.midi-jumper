@@ -6,6 +6,10 @@
 A simple interactive MIDI-based music visualization using **Three.js** and **Tone.js**. Notes from a MIDI file are visualized as animated colored lines in a 3D scene, and played using a basic synth.
 
 <!-- Optional: Add a real screenshot or GIF here -->
+![image](https://github.com/user-attachments/assets/6b947fcf-1f2d-4ec0-af12-54b427ee8512)
+![image](https://github.com/user-attachments/assets/23fbb9d8-fb31-4c1a-b269-efeb9e69e4b4)
+
+
 
 ## ✨ Features
 
